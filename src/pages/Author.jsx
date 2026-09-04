@@ -1,10 +1,94 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import AuthorBanner from "../images/author_banner.jpg";
 import AuthorItems from "../components/author/AuthorItems";
-import { Link } from "react-router-dom";
-import AuthorImage from "../images/author_thumbnail.jpg";
+import { Link, useParams } from "react-router-dom";
+import axios from "axios";
+import Skeleton from "../components/UI/Skeleton";
 
 const Author = () => {
+  const { authorId } = useParams();
+
+  const [author, setAuthor] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [following, setFollowing] = useState(false);
+  const copyWalletAddress = () => {
+    navigator.clipboard.writeText(author.address);
+    setCopied(true);
+
+    setTimeout(() => {
+      setCopied(false);
+    }, 2000);
+  };
+  const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    axios
+      .get(
+        `https://us-central1-nft-cloud-functions.cloudfunctions.net/authors?author=${authorId}`,
+      )
+      .then((response) => {
+        setAuthor(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        setLoading(false);
+      });
+  }, [authorId]);
+
+  if (loading) {
+    return (
+      <div id="wrapper">
+        <div className="no-bottom no-top" id="content">
+          <section
+            id="profile_banner"
+            aria-label="section"
+            className="text-light"
+            style={{ background: `url(${AuthorBanner}) top` }}
+          ></section>
+
+          <section aria-label="section">
+            <div className="container">
+              <div className="row">
+                <div className="col-md-12">
+                  <div className="d_profile de-flex">
+                    <div className="de-flex-col">
+                      <div className="profile_avatar">
+                        <Skeleton
+                          width="100px"
+                          height="100px"
+                          borderRadius="50%"
+                        />
+
+                        <div className="profile_name">
+                          <h4>
+                            <Skeleton width="150px" height="24px" />
+                            <Skeleton width="100px" height="16px" />
+                            <Skeleton width="250px" height="16px" />
+                          </h4>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="profile_follow de-flex">
+                      <div className="de-flex-col">
+                        <Skeleton width="100px" height="20px" />
+                        <Skeleton width="100px" height="45px" />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    );
+  }
+
+  if (!author) {
+    return <div>Author not found.</div>;
+  }
+
   return (
     <div id="wrapper">
       <div className="no-bottom no-top" id="content">
@@ -25,18 +109,24 @@ const Author = () => {
                 <div className="d_profile de-flex">
                   <div className="de-flex-col">
                     <div className="profile_avatar">
-                      <img src={AuthorImage} alt="" />
+                      <img src={author.authorImage} alt="" />
 
                       <i className="fa fa-check"></i>
                       <div className="profile_name">
                         <h4>
-                          Monica Lucas
-                          <span className="profile_username">@monicaaaa</span>
-                          <span id="wallet" className="profile_wallet">
-                            UDHUHWudhwd78wdt7edb32uidbwyuidhg7wUHIFUHWewiqdj87dy7
+                          {author.authorName}
+                          <span className="profile_username">
+                            @{author.tag}
                           </span>
-                          <button id="btn_copy" title="Copy Text">
-                            Copy
+                          <span id="wallet" className="profile_wallet">
+                            {author.address}
+                          </span>
+                          <button
+                            id="btn_copy"
+                            title="Copy Text"
+                            onClick={copyWalletAddress}
+                          >
+                            {copied ? "Copied!" : "Copy"}
                           </button>
                         </h4>
                       </div>
@@ -44,10 +134,16 @@ const Author = () => {
                   </div>
                   <div className="profile_follow de-flex">
                     <div className="de-flex-col">
-                      <div className="profile_follower">573 followers</div>
-                      <Link to="#" className="btn-main">
-                        Follow
-                      </Link>
+                      <div className="profile_follower">
+                        {author.followers + (following ? 1 : 0)} followers
+                      </div>
+
+                      <button
+                        className="btn-main"
+                        onClick={() => setFollowing(!following)}
+                      >
+                        {following ? "Unfollow" : "Follow"}
+                      </button>
                     </div>
                   </div>
                 </div>
@@ -55,7 +151,7 @@ const Author = () => {
 
               <div className="col-md-12">
                 <div className="de_tab tab_simple">
-                  <AuthorItems />
+                  <AuthorItems items={author.nftCollection} />
                 </div>
               </div>
             </div>
