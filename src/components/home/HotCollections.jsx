@@ -6,6 +6,7 @@ import axios from "axios";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
+import Skeleton from "../UI/Skeleton";
 
 const HotCollections = () => {
   const [collections, setCollections] = useState([]);
@@ -62,16 +63,20 @@ const HotCollections = () => {
                   <div key={index}>
                     <div className="nft_coll">
                       <div className="nft_wrap">
-                        <div className="skeleton-box">&nbsp;</div>
+                        <Skeleton width="100%" height="200px" />
                       </div>
 
                       <div className="nft_coll_pp">
-                        <div className="skeleton-box">&nbsp;</div>
+                        <Skeleton
+                          width="60px"
+                          height="60px"
+                          borderRadius="50%"
+                        />
                       </div>
 
                       <div className="nft_coll_info">
-                        <div className="skeleton-box">&nbsp;</div>
-                        <div className="skeleton-box">&nbsp;</div>
+                        <Skeleton width="70%" height="20px" />
+                        <Skeleton width="40%" height="16px" />
                       </div>
                     </div>
                   </div>

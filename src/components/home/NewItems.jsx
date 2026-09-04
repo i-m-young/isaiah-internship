@@ -4,6 +4,7 @@ import axios from "axios";
 import OwlCarousel from "react-owl-carousel";
 import "owl.carousel/dist/assets/owl.carousel.css";
 import "owl.carousel/dist/assets/owl.theme.default.css";
+import Skeleton from "../UI/Skeleton";
 
 const Countdown = ({ expiryDate }) => {
   const [timeLeft, setTimeLeft] = useState(
@@ -95,12 +96,12 @@ const NewItems = () => {
                   <div key={index}>
                     <div className="nft__item">
                       <div className="nft__item_wrap">
-                        <div className="skeleton-box">&nbsp;</div>
+                        <Skeleton width="100%" height="300px" />
                       </div>
 
                       <div className="nft__item_info">
-                        <div className="skeleton-box">&nbsp;</div>
-                        <div className="skeleton-box">&nbsp;</div>
+                        <Skeleton width="60%" height="20px" />
+                        <Skeleton width="30%" height="16px" />
                       </div>
                     </div>
                   </div>
