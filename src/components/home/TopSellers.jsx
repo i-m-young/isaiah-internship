@@ -32,7 +32,13 @@ const TopSellers = () => {
             </div>
           </div>
 
-          <div className="col-md-12">
+          <div
+            data-aos="fade-zoom-in"
+            data-aos-easing="ease-in-out"
+            data-aos-delay="250"
+            data-aos-duration="500"
+            className="col-md-12"
+          >
             <ol className="author_list">
               {loading
                 ? new Array(12).fill(0).map((_, index) => (
@@ -65,7 +71,9 @@ const TopSellers = () => {
                       </div>
 
                       <div className="author_list_info">
-                        <Link to={`/author/${seller.authorId}`}>{seller.authorName}</Link>
+                        <Link to={`/author/${seller.authorId}`}>
+                          {seller.authorName}
+                        </Link>
                         <span>{seller.price} ETH</span>
                       </div>
                     </li>
