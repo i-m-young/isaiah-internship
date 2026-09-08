@@ -9,7 +9,7 @@ const LandingIntro = () => {
             <div className="feature-box f-boxed style-3">
               <div
                 data-aos="fade-up"
-                data-aos-delay="250"
+                data-aos-delay="100"
                 data-aos-duration="500"
                 data-aos-easing="ease-in-out"
               >
